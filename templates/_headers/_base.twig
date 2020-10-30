@@ -1,0 +1,16 @@
+{% set title = title ?? header.displayTitle ?? entry.title|default %}
+
+
+{% set attr = {
+	class: [
+		'',
+		extClass|default
+	],
+}|merge(extAttr|default({})) %}
+
+
+<header {{ attr(attr) }}>
+	{% block content %}
+		<h1>{{ title }}</h1>
+	{% endblock %}
+</header>

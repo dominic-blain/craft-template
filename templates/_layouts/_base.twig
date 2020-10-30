@@ -1,12 +1,39 @@
+{% set header = header ?? entry.header.one()|default %}
 {% set modules = modules ?? entry.modules.all()|default %}
+{% set hasContentBefore = block('contentBefore') is defined %}
+{% set hasContentAfter = block('contentAfter') is defined %}
 
-<main>
 
-	{# MODULES #}
-	{% if modules %}
-		{% for module in modules %}
-			{% include ["_modules/" ~ module.type|kebab, "_modules/_undefined"] with { module: module } only %}
-		{% endfor %}
+{% set attrMain = {
+	class: [
+		'',
+		extClassMain|default
+	],
+}|merge(extAttrMain|default({})) %}
+
+
+{# HEADER #}
+{% block header %}
+	{% if header %}
+		{% include ["_headers/" ~ header.type|kebab, "_headers/_undefined"] with {header: header} %}
+	{% else %}
+		{% include "_headers/_base" %}
 	{% endif %}
+{% endblock %}
 
+<main {{ attr(attrMain) }}>
+	{# CONTENT: Before #}
+	{% block contentBefore %}{% endblock %}
+
+	{# CONTENT #}
+	{% block content %}
+		{% if modules %}
+			{% for module in modules %}
+				{% include ["_modules/" ~ module.type|kebab, "_modules/_undefined"] with { module: module } only %}
+			{% endfor %}
+		{% endif %}
+	{% endblock %}
+
+	{# CONTENT: after #}
+	{% block contentAfter %}{% endblock %}
 </main>

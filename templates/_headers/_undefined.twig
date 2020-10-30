@@ -1,0 +1,8 @@
+{% extends "_headers/_base" %}
+
+{% set extCtnClass = 'bg-alert border-slimmest border-alert rounded-sharp text-alert p-thin' %}
+{% if devMode %}
+	{% block content %}
+		<h1>ERROR - The header <code>{{header.type}}</code> has no corresponding template.</h1>
+	{% endblock %}
+{% endif %}
